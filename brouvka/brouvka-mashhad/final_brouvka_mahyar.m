@@ -1,0 +1,54 @@
+clc
+[tree_mahyar,barg_mahyar,ef] = tree_produce(brouvka);
+while length(ef) ~= 2
+    forbidden = zeros(1,length(ef) - 1);
+    mash = length(mashhad_graph);
+    forbidden_nodes = 1:mash;
+    n = length(barg_mahyar);
+    for i = 1:n
+        if forbidden(i) == 0
+            cheq_tohi = 1;
+            min_sotoon = 1000;
+          for j = 1:length(barg_mahyar{i})
+              for w = 1:mash
+                  if mashhad_graph(w,barg_mahyar{i}(1,j)) < min_sotoon
+                      if ismember(w,tree_mahyar{i}) == 0
+                          min_sotoon = mashhad_graph(w,j);
+                          link_num = w;
+                          cur_node = j;
+                          cheq_tohi = 0;
+                      end
+                  end
+              end
+          end
+              if cheq_tohi == 1
+                  link_num = [];
+              end 
+              for k = 1:n
+                   if ismember(link_num,tree_mahyar{k}) == 1
+                      if k ~= i
+                         forbidden(k) = 1;
+                         break
+                      end
+                   end
+               end 
+               if isempty(link_num) == 0
+                   if ismember(link_num,forbidden_nodes) == 1
+                       brouvka(barg_mahyar{i}(1,cur_node),link_num) = 1;
+                       brouvka(link_num,barg_mahyar{i}(1,cur_node)) = 1;
+                       mashhad_graph(link_num,barg_mahyar{i}(1,cur_node)) = NaN;
+                       mashhad_graph(barg_mahyar{i}(1,cur_node),link_num) = NaN;
+                   end
+               end
+               if isempty(link_num) == 0
+                  forbidden_nodes(tree_mahyar{k}) = 0;
+               end
+        end
+     end
+     [tree_mahyar,barg_mahyar,ef] = tree_produce(brouvka);    
+end
+        
+            
+            
+        
+    

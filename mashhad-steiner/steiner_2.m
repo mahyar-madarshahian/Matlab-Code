@@ -1,0 +1,201 @@
+function steiner = steiner_2(back_nodes)
+n = length(back_nodes);
+steiner = zeros(n,n);
+terminals = [34 1 22 5 32 10];
+max_demand = terminals(ceil(rand*(length(terminals) - 1)));
+    if mod(length(terminals),2) ~= 0
+        terminals = [terminals max_demand];
+    end
+    lter = length(terminals);
+    v = cell(1,lter/2);
+    j = 1;
+    set_node = [];
+for i = 1:2:lter - 1
+        a = terminals(i);
+        b = terminals(i+1);
+    pa = path_search(a,b,back_nodes);
+    pa = es_path(pa,a);
+    flag = 0;
+    h = 0;
+   [co, ipa, iv] = intersect(pa,set_node);
+   if isempty(co) == 1
+       flag = 2;
+   end
+   if flag ~= 2
+   sd = zeros(1,j - 1);
+   for k = 1:j - 1
+     if isempty(setdiff(co,v{k}) == 0)
+         kk = k;
+         h = 1;
+         break
+     elseif sum(ismember(co,v{k})) > 0
+         sd(k) = k;
+     end
+   end
+   if h < 1
+   rrr = find(sd == 0);
+   sd(rrr) = [];
+   new = zeros(1,length(co));
+   for yy = 1: length(co)
+              new(yy) = find(pa == co(yy));
+   end
+              new = sort(new);
+   for g = 1:length(co)
+             co(g) = pa(new(g));
+   end
+  for u = 1:length(sd)
+           if ismember(co(1),v{sd(u)}) == 1
+            if pa(1) ~= co(1)
+              first_pa = path_search(pa(1),co(1),back_nodes);
+              first_pa = es_path(first_pa,pa(1));
+              for ii = 1:length(first_pa)-1
+                   steiner(first_pa(ii),first_pa(ii+1)) = 1;
+                   steiner(first_pa(ii+1),first_pa(ii)) = 1;
+              end
+               break 
+            end
+           end
+  end
+   for u = 1:length(sd)
+           if ismember(co(end),v{sd(u)}) == 1
+               if co(end) ~= pa(end)
+                end_pa = path_search(co(end),pa(end),back_nodes);
+                end_pa = es_path(end_pa,co(end));
+                 for ii = 1:length(end_pa)-1
+                     steiner(end_pa(ii),end_pa(ii+1)) = 1;
+                     steiner(end_pa(ii+1),end_pa(ii)) = 1;
+                 end
+                 break
+               end
+           end
+   end
+  
+           if isempty(first_pa) == 0
+               oo = first_pa(end);
+           else
+               oo = pa(1);
+           end
+           if isempty(end_pa) == 0
+               dd = end_pa(1);
+           else
+               dd = pa(end);
+           end
+           [sk, b_n] = generate_skims(steiner_aux);
+           mo = path_search(oo,dd,b_n);
+           mo = es_path(mo,oo);
+           if isempty(first_pa) == 0
+               fg = 1;
+           else 
+               fg = 0;
+           end
+           if isempty(end_pa) == 0
+               eg = 1;
+           else
+               eg = 0;
+           end
+           if (fg == 1 && eg == 1)
+               first_pa(end) = [];
+               end_pa(1) = [];
+           v{j} = [first_pa mo end_pa];
+           elseif fg == 1 && eg == 0
+               first_pa(end) = [];
+               v{j} = [first_pa mo];
+           elseif (fg == 0 && eg == 1)
+               end_pa(1) = [];
+               v{j} = [mo end_pa];
+           end
+   end
+   end
+           
+   if h == 1
+      
+       [co, ipa, iv] = intersect(pa,v{kk});
+        new = zeros(1,length(co));
+   for yy = 1: length(co)
+              new(yy) = find(pa == co(yy));
+   end
+              new = sort(new);
+   for g = 1:length(co)
+             co(g) = pa(new(g));
+   end
+       if ismember(co(1),v{kk}) == 1
+              if pa(1) ~= co(1)
+              first_pa = path_search(pa(1),co(1),back_nodes);
+              first_pa = es_path(first_pa,pa(1));
+              end
+              for ii = 1:length(first_pa)-1
+                   steiner(first_pa(ii),first_pa(ii+1)) = 1;
+                   steiner(first_pa(ii+1),first_pa(ii)) = 1;
+              end
+        end
+           if ismember(co(end),v{kk}) == 1
+               if pa(end) ~= co(end)
+              end_pa = path_search(co(end),pa(end),back_nodes);
+              end_pa = es_path(end_pa,co(end));
+               for ii = 1:length(end_pa)-1
+                   steiner(end_pa(ii),end_pa(ii+1)) = 1;
+                   steiner(end_pa(ii+1),end_pa(ii)) = 1;
+               end
+               end
+           end
+           if isempty(first_pa) == 0
+               oo = first_pa(end);
+           else
+               oo = pa(1);
+           end
+           if isempty(end_pa) == 0
+               dd = end_pa(1);
+           else
+               dd = pa(end);
+           end
+           if oo~= dd
+           [sk, b_n] = generate_skims(steiner_aux);
+           mo = path_search(oo,dd,b_n);
+           mo = es_path(mo,oo);
+           else 
+               mo = [];
+           end
+           if isempty(first_pa) == 0
+               fg = 1;
+           else 
+               fg = 0;
+           end
+           if isempty(end_pa) == 0
+               eg = 1;
+           else
+               eg = 0;
+           end
+           if fg == 1 && eg == 1
+               first_pa(end) = [];
+               end_pa(1) = [];
+           v{j} = [first_pa mo end_pa];
+           elseif fg == 1 && eg == 0
+               first_pa(end) = [];
+               v{j} = [first_pa mo];
+           elseif fg == 0 && eg == 1
+               end_pa(1) = [];
+               v{j} = [mo end_pa];
+           end
+           
+   end
+   
+      if flag == 2
+        
+       for ii = 1:length(pa)-1
+                steiner(pa(ii),pa(ii+1)) = 1;
+                steiner(pa(ii+1),pa(ii)) = 1;
+       end
+       v{j} = pa;
+       
+     end 
+     
+    if j <= lter - 1
+       [set_node qq bb] = union(set_node, v{j});
+    end
+    
+    steiner_aux = steiner;
+   first_pa = [];
+   end_pa = [];
+   
+   j = j +1;
+end

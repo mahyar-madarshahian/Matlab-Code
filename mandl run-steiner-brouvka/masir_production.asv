@@ -1,0 +1,28 @@
+clear all
+clc
+masir1 = [13 14 16 17 21];
+newfile = load('newfile.txt');
+n = length(masir1);
+m = length(newfile);
+fid = fopen('masir1','a+'); % txt newfile ra besaz va addadha ra begir vali ghabliharo pak Nakon
+  for i = 1:n
+      for j = 1:m
+          if masir1(1,i) == j
+              for k = 1:m
+                  if j ~= m
+                  stcontent = newfile(j+1,k);
+                  if stcontent ~= 0
+                  fprintf(fid, '%d\t', stcontent);
+                  else
+                      fprintf(fid, '\n', stcontent);% faghat boro khate bad
+                      fclose(fid);
+                      break
+                  end
+              end
+          end
+      end
+   fid = fopen('masir1','a+');  
+  end   
+
+
+    

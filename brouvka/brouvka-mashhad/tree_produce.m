@@ -1,0 +1,21 @@
+function [tree_mahyar,barg_mahyar,ef] = tree_produce(brouvka)
+brouvka(1:length(brouvka)+1:end) = 1;
+[mas tek ef do] = dmperm(brouvka);
+tedad_tree = length(ef)-1;
+tree_mahyar = cell(1,tedad_tree);
+   for ii = 1:tedad_tree
+       tree_mahyar{ii} = mas(ef(ii):ef(ii+1)-1);
+   end
+   k = 1;
+   n = length(brouvka);
+   m = length(tree_mahyar);
+   brouvka(1:n+1:end) = 0;
+for i = 1:m
+    for j = 1:length(tree_mahyar{i})
+        if  sum(brouvka(:,tree_mahyar{i}(1,j))) == 1
+            barg_mahyar{i}(1,k) = tree_mahyar{i}(1,j);
+            k = k+1;
+        end
+    end
+    k = 1;
+end

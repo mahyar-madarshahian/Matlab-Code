@@ -1,0 +1,36 @@
+clear path
+clc
+terminals = load('number_mash.txt');
+terminals = terminals';
+n = length(terminals);
+m = n*(n-1)/2;
+st = zeros(m,724)+NaN;
+k = 1;
+for i = 1:n-1
+    for j = i+1:n
+        pa = path_search(terminals(i), terminals(j), back_nodes);
+        path = es_path(pa,terminals(i));
+        for t = 1:length(path)
+            st(k,t) = path(t);
+        end
+        
+       % call fprintf to print the updated text strings
+   fid = fopen('newfile11.txt','a+'); % txt newfile1 ra besaz va addadha ra begir vali ghabliharo pak Nakon
+   fprintf(fid, '%d\t', '[TYPE 3]')
+   for tt=1:724
+       stcontent=st(k,tt);
+       if (strcmp(num2str(stcontent),'NaN')==1)
+       fprintf(fid, '\n', stcontent);% faghat boro khate bad    
+           break;
+       end
+      fprintf(fid, '%d\t', stcontent); % addad ra vered va yek tab fasele bede
+  end   
+    fclose(fid); % fid ra beband
+    
+%     fid2 = fopen('newfile1.txt','r');
+%     scancontent=fscanf(fid2,'%d')
+%     fclose(fid2);
+    
+        k = k+1;
+    end
+end

@@ -1,0 +1,27 @@
+clc
+masir = [179	221	433	440	522	544	648	766	812	939	1097	1359	1584	1671	1855	2239	2412	2457	2480	2826	3058	3073	3117	3650	3693	3735	3741	3843	3883	4249	4397	4534	4786	4999	5231	5333	5394	5494	5880	5904	6419	6444	6678	6692	6767	6774	6854	6958	7023	7145	7234	7246	7390	7500	7804	8049	8057	8065	8252	8280	8396	8547	8883	8909	9190	9425	9428	9573	9742	9962	10087	10311	10479	10495	10612	10625	10854	10921	11067	11462	11654	11820	12000	12109	12326	12450	12504	12573	12574	12638	12703	12717	12856	12891	12901	12953	13009	13013	13223	13239	13418	13420	13581	13712	13790	13861	13875	13972	14058	14173	14189	14303	14316	14364
+];
+newfile = load('newfile.txt');
+n = length(masir);
+m = length(newfile);
+fid = fopen('masir3','a+'); % txt newfile ra besaz va addadha ra begir vali ghabliharo pak Nakon
+  for i = 1:n
+      for j = 1:m
+          if masir(1,i) == j
+              for k = 1:m
+                  stcontent = newfile(j+1,k);
+                  if stcontent ~= 0
+                  fprintf(fid, '%d\t', stcontent);
+                  else
+                      fprintf(fid, '\n', stcontent);% faghat boro khate bad
+                      fclose(fid);
+                      break
+                  end
+              end
+          end
+      end
+   fid = fopen('masir3','a+');  
+  end   
+
+
+    

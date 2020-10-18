@@ -1,0 +1,10 @@
+function pa = path_search(O, D, back_nodes)
+aux = zeros(1,2);
+if back_nodes(D,O) == D
+    aux(1,:) = [O D];
+else
+    pa = [aux, path_search(O, back_nodes(D,O),back_nodes, Q+1)];
+end
+    
+    
+    

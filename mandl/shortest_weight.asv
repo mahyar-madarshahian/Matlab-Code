@@ -1,0 +1,15 @@
+clear a 
+clc
+a = zeros(1,15);
+j = 1;
+for i = 1:15 % sotoone pathes
+        while pathes(j,i) ~= 6
+        k = mandl_graph(pathes(j,i),pathes(j+1,i));
+        j = j+1;
+        end
+    a = a(i);
+    j = 1;
+    break
+end
+
+        

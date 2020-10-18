@@ -1,0 +1,6 @@
+barg = [];
+for i = 1:15
+    if sum(steiner4(:,i)) == 1
+        barg = [barg,i];
+    end
+end

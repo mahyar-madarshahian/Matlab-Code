@@ -1,0 +1,10 @@
+function k = es_v(v)
+d = zeros(size(v));
+for i = i:length(v)
+    if v(i) == v(i+1)
+        d(i+1) = 1;
+    end
+end
+d = find(d == 1);
+ v(d) = [];
+ 
